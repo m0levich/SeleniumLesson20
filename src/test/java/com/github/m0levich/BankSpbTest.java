@@ -5,7 +5,6 @@ import com.github.m0levich.pages.MainPage;
 import com.github.m0levich.pages.OverviewPage;
 import com.github.m0levich.pages.TwoFactorAuthPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -37,17 +36,17 @@ public class BankSpbTest {
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         LoginPage loginPage = new LoginPage(webDriver);
         ReadingFromFile readingFromFile = new ReadingFromFile();
-        loginPage.login(readingFromFile.getLogin(), readingFromFile.getPassword());
-        TwoFactorAuthPage twoFactorAuthPage = new TwoFactorAuthPage(webDriver);
-        twoFactorAuthPage.twoFactorsAuth(readingFromFile.getSmsPin());
-        MainPage mainPage = new MainPage(webDriver);
-        mainPage.getNavigationMenu().selectMenu("Обзор");
+        loginPage
+                .login(readingFromFile.getLogin(), readingFromFile.getPassword())
+                .twoFactorsAuth(readingFromFile.getSmsPin())
+                .getNavigationMenu()
+                .selectMenu("Обзор");
         OverviewPage overviewPage = new OverviewPage(webDriver);
         String financialFreedomValue = overviewPage.getFinancialFreedom().getFinancialFreedomValue();
         Assert.assertTrue(financialFreedomValue.matches(overviewPage.getFinancialFreedom().getMatcher()));
         Actions act = new Actions(webDriver);
-        act.moveToElement(webDriver.findElement(overviewPage.getFinancialFreedom().getFinancialFreedomBlock())).perform();
-        boolean b = webDriver.findElement(overviewPage.getFinancialFreedom().getMyAssets()).isDisplayed();
+        act.moveToElement(overviewPage.getFinancialFreedom().getFinancialFreedomBlock()).perform();
+        boolean b = overviewPage.getFinancialFreedom().getMyAssets().isDisplayed();
         Assert.assertTrue(b);
         String myAssets = overviewPage.getFinancialFreedom().getMyAssetsValue();
         Assert.assertTrue(myAssets.matches("Моих средств " + overviewPage.getFinancialFreedom().getMatcher()));
