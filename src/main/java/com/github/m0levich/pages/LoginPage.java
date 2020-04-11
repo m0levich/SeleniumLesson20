@@ -2,7 +2,6 @@ package com.github.m0levich.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,6 +19,9 @@ public class LoginPage {
     @FindBy(id = "login-button")
     private WebElement enterButton;
 
+    @FindBy(xpath = "//a[@class='chevron locale inline-block']")
+    private WebElement returnLanguage;
+
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         new WebDriverWait(webDriver,15).until(ExpectedConditions.titleContains("Интернет банк - Банк Санкт-Петербург"));
@@ -33,5 +35,11 @@ public class LoginPage {
         userPasswordField.sendKeys(userPassword);
         enterButton.click();
         return new TwoFactorAuthPage(webDriver);
+    }
+
+    public void checkLanguage(){
+        if(webDriver.getTitle().contains("Bank Saint-Petersburg")){
+            returnLanguage.click();
+        }
     }
 }

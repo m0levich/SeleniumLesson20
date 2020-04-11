@@ -1,6 +1,5 @@
 package com.github.m0levich.pages;
 
-import com.github.m0levich.blocks.NavigationMenu;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;

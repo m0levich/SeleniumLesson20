@@ -1,13 +1,13 @@
 package com.github.m0levich;
 
 import com.github.m0levich.pages.LoginPage;
-import com.github.m0levich.pages.MainPage;
 import com.github.m0levich.pages.OverviewPage;
-import com.github.m0levich.pages.TwoFactorAuthPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BankSpbTest {
     private WebDriver webDriver;
+    private static final Logger LOG = LoggerFactory.getLogger(BankSpbTest.class);
 
     @BeforeClass
     public void driverSetup() {
@@ -32,15 +33,21 @@ public class BankSpbTest {
     }
 
     @Test
-    public void myAssetsTest() throws InterruptedException, FileNotFoundException {
+    public void myAssetsTest() {
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         LoginPage loginPage = new LoginPage(webDriver);
         ReadingFromFile readingFromFile = new ReadingFromFile();
-        loginPage
-                .login(readingFromFile.getLogin(), readingFromFile.getPassword())
-                .twoFactorsAuth(readingFromFile.getSmsPin())
-                .getNavigationMenu()
-                .selectMenu("Обзор");
+        loginPage.checkLanguage();
+        try {
+            loginPage
+                    .login(readingFromFile.getLogin(), readingFromFile.getPassword())
+                    .twoFactorsAuth(readingFromFile.getSmsPin())
+                    .getNavigationMenu()
+                    .selectMenu("Обзор");
+        } catch (FileNotFoundException e) {
+            LOG.info("Файл не найден в корне проекта");
+            e.printStackTrace();
+        }
         OverviewPage overviewPage = new OverviewPage(webDriver);
         String financialFreedomValue = overviewPage.getFinancialFreedom().getFinancialFreedomValue();
         Assert.assertTrue(financialFreedomValue.matches(overviewPage.getFinancialFreedom().getMatcher()));
