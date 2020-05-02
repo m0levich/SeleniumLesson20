@@ -45,16 +45,14 @@ public class BankSpbTest {
                     .getNavigationMenu()
                     .selectMenu("Обзор");
         } catch (FileNotFoundException e) {
-            LOG.info("Файл не найден в корне проекта");
-            e.printStackTrace();
+            Assert.fail("Файл не найден в корне проекта", e);
         }
         OverviewPage overviewPage = new OverviewPage(webDriver);
         String financialFreedomValue = overviewPage.getFinancialFreedom().getFinancialFreedomValue();
         Assert.assertTrue(financialFreedomValue.matches(overviewPage.getFinancialFreedom().getMatcher()));
         Actions act = new Actions(webDriver);
         act.moveToElement(overviewPage.getFinancialFreedom().getFinancialFreedomBlock()).perform();
-        boolean b = overviewPage.getFinancialFreedom().getMyAssets().isDisplayed();
-        Assert.assertTrue(b);
+        Assert.assertTrue(overviewPage.getFinancialFreedom().getMyAssets().isDisplayed());
         String myAssets = overviewPage.getFinancialFreedom().getMyAssetsValue();
         Assert.assertTrue(myAssets.matches("Моих средств " + overviewPage.getFinancialFreedom().getMatcher()));
     }
