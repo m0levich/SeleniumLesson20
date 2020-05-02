@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 public class BankSpbTest {
     private WebDriver webDriver;
-    private static final Logger LOG = LoggerFactory.getLogger(BankSpbTest.class);
 
     @BeforeClass
     public void driverSetup() {
