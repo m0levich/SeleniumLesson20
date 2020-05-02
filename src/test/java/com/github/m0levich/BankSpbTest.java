@@ -6,8 +6,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -48,12 +46,12 @@ public class BankSpbTest {
         }
         OverviewPage overviewPage = new OverviewPage(webDriver);
         String financialFreedomValue = overviewPage.getFinancialFreedom().getFinancialFreedomValue();
-        Assert.assertTrue(financialFreedomValue.matches(overviewPage.getFinancialFreedom().getMatcher()));
+        Assert.assertTrue(financialFreedomValue.matches(overviewPage.getFinancialFreedom().getMatcher()),"Financial Freedom check on the matcher failed");
         Actions act = new Actions(webDriver);
         act.moveToElement(overviewPage.getFinancialFreedom().getFinancialFreedomBlock()).perform();
-        Assert.assertTrue(overviewPage.getFinancialFreedom().getMyAssets().isDisplayed());
+        Assert.assertTrue(overviewPage.getFinancialFreedom().getMyAssets().isDisplayed(),"MyAssets block check for display failed");
         String myAssets = overviewPage.getFinancialFreedom().getMyAssetsValue();
-        Assert.assertTrue(myAssets.matches("Моих средств " + overviewPage.getFinancialFreedom().getMatcher()));
+        Assert.assertTrue(myAssets.matches("Моих средств " + overviewPage.getFinancialFreedom().getMatcher()),"MyAssets block check on the matcher failed");
     }
 
     @AfterMethod
