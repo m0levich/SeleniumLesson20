@@ -39,19 +39,19 @@ public class BankSpbTest {
             loginPage
                     .login(readingFromFile.getLogin(), readingFromFile.getPassword())
                     .twoFactorsAuth(readingFromFile.getSmsPin())
-                    .getNavigationMenu()
+                    .navigationMenu
                     .selectMenu("Обзор");
         } catch (FileNotFoundException e) {
             Assert.fail("Файл не найден в корне проекта", e);
         }
         OverviewPage overviewPage = new OverviewPage(webDriver);
-        String financialFreedomValue = overviewPage.getFinancialFreedom().getFinancialFreedomValue();
-        Assert.assertTrue(financialFreedomValue.matches(overviewPage.getFinancialFreedom().getMatcher()),"Financial Freedom check on the matcher failed");
+        String financialFreedomValue = overviewPage.financialFreedom.financialFreedomBlock.getText();
+        Assert.assertTrue(financialFreedomValue.matches(overviewPage.financialFreedom.matcher),"Financial Freedom check on the matcher failed");
         Actions act = new Actions(webDriver);
-        act.moveToElement(overviewPage.getFinancialFreedom().getFinancialFreedomBlock()).perform();
-        Assert.assertTrue(overviewPage.getFinancialFreedom().getMyAssets().isDisplayed(),"MyAssets block check for display failed");
-        String myAssets = overviewPage.getFinancialFreedom().getMyAssetsValue();
-        Assert.assertTrue(myAssets.matches("Моих средств " + overviewPage.getFinancialFreedom().getMatcher()),"MyAssets block check on the matcher failed");
+        act.moveToElement(overviewPage.financialFreedom.financialFreedomBlock).perform();
+        Assert.assertTrue(overviewPage.financialFreedom.myAssets.isDisplayed(),"MyAssets block check for display failed");
+        String myAssets = overviewPage.financialFreedom.myAssets.getText();
+        Assert.assertTrue(myAssets.matches("Моих средств " + overviewPage.financialFreedom.matcher),"MyAssets block check on the matcher failed");
     }
 
     @AfterMethod

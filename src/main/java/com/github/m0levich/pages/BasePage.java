@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class BasePage {
     public static final int TIME_OUT_IN_SECONDS = 30;
     protected final WebDriver webDriver;
-    private final NavigationMenu navigationMenu;
+    public final NavigationMenu navigationMenu;
     protected final WebDriverWait webDriverWait;
 
     public BasePage(WebDriver webDriver) {
@@ -16,9 +16,5 @@ public class BasePage {
         this.navigationMenu = new NavigationMenu(webDriver);
         this.webDriverWait = new WebDriverWait(webDriver, TIME_OUT_IN_SECONDS);
         PageFactory.initElements(webDriver,this);
-    }
-
-    public NavigationMenu getNavigationMenu() {
-        return navigationMenu;
     }
 }
